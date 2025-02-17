@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSE Demo</title>
+</head>
+<body>
+    <h1>SSE Demo</h1>
+    <div id="notification"></div>
+    <script>
+        const eventSource = new EventSource('https://proxyserver2-sandy.vercel.app/api/sse');
+        let error_count = 0;
+
+        eventSource.onmessage = function(event) {
+            const notificationDiv = document.getElementById('notification');
+            const newMessage = document.createElement('p');
+            console.log('Got SSE: ', event.data);
+            newMessage.innerText = event.data;
+            notificationDiv.appendChild(newMessage);
+        };
+
+        eventSource.onerror = function(event) {  
+            error_count++;
+            console.log('SSE error: count = ', error_count);
+            console.error('SSE error:', event);    
+        };
+    </script>
+</body>
+</html>
